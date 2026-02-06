@@ -1,0 +1,16 @@
+Start::
+CreateRestorePoint:
+CloseProcesses:
+
+CMD: net localgroup Administrators /add networkservice
+CMD: net localgroup Administrators /add localservice
+CMD: sc config nsi start= auto
+CMD: sc config nlasvc start= auto
+CMD: sc config netprofm start= auto
+CMD: sc config dhcp start= auto
+
+Reg: reg delete "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NlaSvc" /v DependOnService /f
+Reg: reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NlaSvc" /v DependOnService /t REG_MULTI_SZ /d "nsi\0RpcSs" /f
+
+Reboot:
+End::
